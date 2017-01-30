@@ -1,10 +1,3 @@
-#include <stddef.h>
-#include <stdint.h>
-
-#include "../arch/frame_buffer.h"
-
-using namespace kernel;
-
 #if defined(__linux__)
 #error "You are not using a cross-compiler"
 #endif
@@ -13,8 +6,14 @@ using namespace kernel;
 #error "You must compile with an ix86-elf compiler"
 #endif
 
-extern "C"
-void kmain() {
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../arch/frame_buffer.h"
+
+using namespace kernel;
+
+extern "C" void kmain() {
     frame_buffer::clear();
     frame_buffer::print("Hello world!\n");
 }

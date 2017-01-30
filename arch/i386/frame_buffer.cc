@@ -5,13 +5,7 @@
 
 namespace kernel {
 namespace frame_buffer {
-
-    static const size_t WIDTH = 80;
-    static const size_t HEIGHT = 25;
-    static int row, column;
-    static uint16_t* buffer = (uint16_t*)0xB8000;
-
-    enum vga_color {
+    enum Color {
         BLACK,
         BLUE,
         GREEN,
@@ -30,7 +24,12 @@ namespace frame_buffer {
         WHITE,
     };
 
-    static inline uint8_t make_color(vga_color fg, vga_color bg) {
+    static const size_t WIDTH = 80;
+    static const size_t HEIGHT = 25;
+    static int row, column;
+    static uint16_t* buffer = (uint16_t*)0xB8000;
+
+    static inline uint8_t make_color(Color fg, Color bg) {
         return fg | bg << 4;
     }
 
