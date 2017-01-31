@@ -3,7 +3,6 @@
 
 namespace kernel {
 namespace frame_buffer {
-
     void clear();
     void print(char c);
     void print(const char* str);

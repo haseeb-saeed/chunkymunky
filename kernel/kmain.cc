@@ -10,10 +10,13 @@
 #include <stdint.h>
 
 #include "../arch/frame_buffer.h"
+#include "../arch/gdt.h"
 
 using namespace kernel;
 
 extern "C" void kmain() {
+    gdt::init();
+
     frame_buffer::clear();
     frame_buffer::print("Hello world!\n");
 }
