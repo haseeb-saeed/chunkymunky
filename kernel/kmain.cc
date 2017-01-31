@@ -11,11 +11,13 @@
 
 #include "../arch/frame_buffer.h"
 #include "../arch/gdt.h"
+#include "../arch/interrupt.h"
 
 using namespace kernel;
 
 extern "C" void kmain() {
     gdt::init();
+    interrupt::init_idt();
 
     frame_buffer::clear();
     frame_buffer::print("Hello world!\n");
