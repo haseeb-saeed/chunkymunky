@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "../frame_buffer.h"
+#include <arch/frame_buffer.h>
 
 namespace kernel {
 namespace frame_buffer {

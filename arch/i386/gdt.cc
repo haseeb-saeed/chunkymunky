@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "../gdt.h"
+#include <arch/gdt.h>
 
 extern "C" void flush_gdt(uint32_t gdt_ptr);
 

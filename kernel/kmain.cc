@@ -9,9 +9,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "../arch/frame_buffer.h"
-#include "../arch/gdt.h"
-#include "../arch/interrupt.h"
+#include <arch/frame_buffer.h>
+#include <arch/gdt.h>
+#include <arch/interrupt.h>
 
 using namespace kernel;
 

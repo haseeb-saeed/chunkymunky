@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "../interrupt.h"
+#include <arch/interrupt.h>
 
 extern "C" void load_idt(uint32_t idt_ptr);
 
