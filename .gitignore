@@ -1,4 +1,6 @@
 *.kernel
 *.swp
 *.o
+*.d
+*.a
 sysroot/*
