@@ -8,9 +8,10 @@ LIBS?=
 
 DESTDIR?=sysroot
 PREFIX?=/usr/local
-#EXEC_PREFIX?=$(PREFIX)
+EXEC_PREFIX?=$(PREFIX)
 #BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
+LIBDIR?=$(EXEC_PREFIX)/lib
 
 CXX:=$(HOST)-g++
 NASM:=nasm
@@ -18,7 +19,7 @@ NASM:=nasm
 CPPFLAGS:=$(CPPFLAGS) -ffreestanding -Wall -Wextra -fno-exceptions -I$(DESTDIR)$(INCLUDEDIR)
 ASMFLAGS:=-felf32
 LDFLAGS:=$(LDFLAGS)
-LIBS:=$(LIBS) -nostdlib -lgcc
+LIBS:=$(LIBS) -nostdlib -lgcc -L $(DESTDIR)$(LIBDIR) -lk
 
 ARCHDIR:=arch/$(HOSTARCH)
 
@@ -52,11 +53,12 @@ $(CRTN_OBJ) \
 all: chunkymunky.kernel
 
 .PHONY: all clean install install-headers# install-kernel
+.SUFFIXES: .o .cc .asm
 
 chunkymunky.kernel: $(OBJ_LINK_LIST) $(ARCHDIR)/linker.ld
 	$(CXX) -T $(ARCHDIR)/linker.ld -o $@ $(CPPFLAGS) $(OBJ_LINK_LIST) $(LDFLAGS) $(LIBS)
 
-%.o: %.c
+%.o: %.cc
 	$(CXX) -c $< -o $@ $(CPPFLAGS)
 
 %.o: %.asm

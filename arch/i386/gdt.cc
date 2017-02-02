@@ -8,7 +8,7 @@ extern "C" void flush_gdt(uint32_t gdt_ptr);
 namespace kernel {
 namespace gdt {
     static const uint32_t ENTRY_BASE = 0;
-    static const uint32_t ENTRY_LIMIT = 0x000FFFFF;
+    static const uint32_t ENTRY_LIMIT = ~0;
     static const size_t NUM_ENTRIES = 3;
 
     // Packed to prevent any compiler optimization
@@ -40,7 +40,7 @@ namespace gdt {
         gdt[index].base_middle = ((base >> 16) & 0xFF);
         gdt[index].base_high = ((base >> 24) & 0xFF);
         gdt[index].access = access;
-        gdt[index].granularity = (((limit >> 16) & 0x0F) | (granularity & 0xF0));
+        gdt[index].granularity = granularity;
     }
 
     void init() {

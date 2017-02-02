@@ -18,7 +18,12 @@ using namespace kernel;
 extern "C" void kmain() {
     gdt::init();
     interrupt::init_idt();
-
     frame_buffer::clear();
-    frame_buffer::print("Hello world!\n");
+
+    frame_buffer::print("Starting OS...\n");
+
+    for (char i = 0; i <= 127; ++i) {
+            frame_buffer::print(i);
+            frame_buffer::print('\n');
+    }
 }

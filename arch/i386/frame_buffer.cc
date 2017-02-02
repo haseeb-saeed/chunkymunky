@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <arch/frame_buffer.h>
 
@@ -41,10 +42,18 @@ namespace frame_buffer {
         row = 0;
         column = 0;
 
-        // TODO: Replace with memcpy
         for (size_t i = 0; i < WIDTH * HEIGHT; ++i) {
-            buffer[i] = make_entry(' ', make_color (LIGHT_GREY, BLACK));
+            buffer[i] = make_entry(0, make_color(LIGHT_GREY, BLACK));
         }
+    }
+
+    void scroll() {
+        memmove(buffer, buffer + WIDTH, WIDTH * (HEIGHT - 1) * sizeof(*buffer));
+        for (size_t i = WIDTH * (HEIGHT - 1); i < WIDTH * HEIGHT; ++i) {
+            buffer[i] = make_entry(0, make_color(LIGHT_GREY, BLACK));
+        }
+
+        row -= 1;
     }
 
     void print(char c) {
@@ -61,8 +70,8 @@ namespace frame_buffer {
             }
         }
 
-        // TODO: Shift rows if we're at the last row
         if (row == HEIGHT) {
+            scroll();
         }
     }
 
