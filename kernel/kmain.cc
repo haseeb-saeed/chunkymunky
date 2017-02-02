@@ -22,8 +22,8 @@ extern "C" void kmain() {
 
     frame_buffer::print("Starting OS...\n");
 
-    for (char i = 0; i <= 127; ++i) {
-            frame_buffer::print(i);
-            frame_buffer::print('\n');
+    for (int i = 0; i < 255; ++i) {
+        frame_buffer::print(i);
+        frame_buffer::print("\n");
     }
 }

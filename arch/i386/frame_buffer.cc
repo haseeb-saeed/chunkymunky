@@ -75,6 +75,25 @@ namespace frame_buffer {
         }
     }
 
+    // TODO: Replace with itoa
+    void print(int n) {
+        if (n < 0) {
+            print('-');
+            n = -n;
+        }
+
+        char str[32];
+        int i = sizeof(str) - 1;
+        str[i] = '\0';
+
+        while (n > 0 && i > 0) {
+            str[--i] = '0' + (n % 10);
+            n /= 10;
+        }
+
+        print(&str[i]);
+    }
+
     void print(const char* str) {
         for (size_t i = 0; str[i] != '\0'; ++i) {
             print(str[i]);
