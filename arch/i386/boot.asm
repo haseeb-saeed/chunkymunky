@@ -27,12 +27,14 @@ _start:
     ; Move the stack pointer to the top of the kernel stack
     mov esp, stack_top
 
+    ; Initialize the kernel
+    extern kinit
+    call kinit
+
     ; Run global destructors
-    ; TODO: Load GDT
     extern _init
     call _init
 
-    ; Call the entry into C/C++ code
     extern kmain
     call kmain
 

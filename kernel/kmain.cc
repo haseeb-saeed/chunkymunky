@@ -15,14 +15,19 @@
 
 using namespace kernel;
 
-extern "C" void kmain() {
-    gdt::init();
-    interrupt::init_idt();
+extern "C" void kinit() {
     frame_buffer::clear();
 
+    // Hardware-related initialization
+    gdt::init();
+    interrupt::init_idt();
+}
+
+extern "C" void kmain() {
     frame_buffer::print("Starting OS...\n");
 
-    for (int i = 0; i < 255; ++i) {
+    // This loop is just to make sure nothing funky is happening
+    for (int i = 0; ; ++i) {
         frame_buffer::print(i);
         frame_buffer::print("\n");
     }
