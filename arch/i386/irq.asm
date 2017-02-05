@@ -33,7 +33,6 @@ remap_irq:
     xor al, al
     out PIC_MASTER_DATA, al
     out PIC_SLAVE_DATA, al
-
     ret
 
 ; EOI on master PIC
@@ -48,4 +47,10 @@ global irq_eoi_slave
 irq_eoi_slave:
     mov al, 0x20
     out PIC_SLAVE, al
+    ret
+
+; Gets the input byte from the keyboard IRQ
+global get_keyboard_input
+get_keyboard_input:
+    in al, 0x60
     ret

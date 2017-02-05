@@ -107,13 +107,14 @@ namespace interrupt {
             handler(frame);
         }
 
+        /*
         kernel::frame_buffer::print("Interrupt: ");
         kernel::frame_buffer::print((int)frame->int_num);
         kernel::frame_buffer::print("\n");
+        */
 
         // Notify master and slave ports that we've handled the irq
         if (is_irq(frame->int_num)) {
-            kernel::frame_buffer::print("This is an irq!\n");
             if (to_irq(frame->int_num) >= 8) {
                 irq_eoi_slave();
             }

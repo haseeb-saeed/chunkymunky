@@ -12,6 +12,7 @@
 #include <arch/frame_buffer.h>
 #include <arch/gdt.h>
 #include <arch/interrupt.h>
+#include <arch/keyboard.h>
 
 using namespace kernel;
 
@@ -21,14 +22,14 @@ extern "C" void kinit() {
     // Hardware-related initialization
     gdt::init();
     interrupt::init_idt();
+    keyboard::init();
 }
 
 extern "C" void kmain() {
     frame_buffer::print("Starting OS...\n");
 
-    // This loop is just to make sure nothing funky is happening
+    // Loop for interrupt testing
     for (;;) {
-        //frame_buffer::print(i);
-        //frame_buffer::print("\n");
+        asm("hlt");
     }
 }
