@@ -56,6 +56,9 @@ isr_error 30    ; Security exception
 
 isr_noerror 31  ; Reserved
 
+isr_noerror 32  ; PIT
+isr_noerror 33  ; Keyboard
+
 ; Save registers and call C++ handler
 call_interrupt_handler:
     pusha

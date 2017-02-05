@@ -9,6 +9,8 @@
 
 extern "C" void load_idt(uint32_t idt_ptr);
 extern "C" void remap_irq();
+extern "C" void irq_eoi_master();
+extern "C" void irq_eoi_slave();
 
 // Assembly ISRs
 extern "C" void isr0();
@@ -43,11 +45,14 @@ extern "C" void isr28();
 extern "C" void isr29();
 extern "C" void isr30();
 extern "C" void isr31();
+extern "C" void isr32();
+extern "C" void isr33();
 
 namespace kernel {
 namespace interrupt {
     static const size_t NUM_ENTRIES = 256;
     static const size_t NUM_EXCEPTIONS = 32;
+    static const size_t NUM_IRQS = 16;
 
     // Packed to prevent any compiler optimization
     struct Idt_entry {
@@ -66,6 +71,18 @@ namespace interrupt {
     Idt_entry idt[NUM_ENTRIES] = {{0, 0, 0, 0, 0}};
     Idt_ptr idt_ptr;
     Interrupt_handler handlers[NUM_ENTRIES] = {0};
+
+    static inline bool is_exception(uint32_t int_num) {
+        return int_num < NUM_EXCEPTIONS;
+    }
+
+    static inline uint32_t to_irq(uint32_t int_num) {
+        return int_num - NUM_EXCEPTIONS;
+    }
+
+    static inline bool is_irq(uint32_t int_num) {
+        return to_irq(int_num) < NUM_IRQS;
+    }
 
     static void set_idt_gate(size_t index, uint32_t base, uint16_t sel, uint8_t flags) {
         if (index >= NUM_ENTRIES) {
@@ -93,9 +110,19 @@ namespace interrupt {
         kernel::frame_buffer::print("Interrupt: ");
         kernel::frame_buffer::print((int)frame->int_num);
         kernel::frame_buffer::print("\n");
+
+        // Notify master and slave ports that we've handled the irq
+        if (is_irq(frame->int_num)) {
+            kernel::frame_buffer::print("This is an irq!\n");
+            if (to_irq(frame->int_num) >= 8) {
+                irq_eoi_slave();
+            }
+            irq_eoi_master();
+        }
     }
 
     static void init_handlers() {
+        // Exception handlers
         ADD_ISR_HANDLER(0, 0x08, 0x8E);
         ADD_ISR_HANDLER(1, 0x08, 0x8E);
         ADD_ISR_HANDLER(2, 0x08, 0x8E);
@@ -128,6 +155,10 @@ namespace interrupt {
         ADD_ISR_HANDLER(29, 0x08, 0x8E);
         ADD_ISR_HANDLER(30, 0x08, 0x8E);
         ADD_ISR_HANDLER(31, 0x08, 0x8E);
+
+        // IRQ handlers
+        ADD_ISR_HANDLER(32, 0x08, 0x8E);
+        ADD_ISR_HANDLER(33, 0x08, 0x8E);
     }
 
     void init_idt() {

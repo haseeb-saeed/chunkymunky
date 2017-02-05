@@ -27,8 +27,8 @@ extern "C" void kmain() {
     frame_buffer::print("Starting OS...\n");
 
     // This loop is just to make sure nothing funky is happening
-    for (int i = 0; ; ++i) {
-        frame_buffer::print(i);
-        frame_buffer::print("\n");
+    for (;;) {
+        //frame_buffer::print(i);
+        //frame_buffer::print("\n");
     }
 }

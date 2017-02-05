@@ -7,12 +7,6 @@ OFFSET_SLAVE    equ 0x28
 
 global remap_irq
 remap_irq:
-    ; Save the interrupt masks
-    in al, PIC_MASTER_DATA
-    mov cl, al
-    in al, PIC_SLAVE_DATA
-    mov ch, al
-
     ; Initialize
     mov al, 0x11
     out PIC_MASTER, al
@@ -35,10 +29,23 @@ remap_irq:
     out PIC_MASTER_DATA, al
     out PIC_SLAVE_DATA, al
 
-    ; Restore interrupt masks
-    mov al, cl
+    ; Set interrupt masks
+    xor al, al
     out PIC_MASTER_DATA, al
-    mov al, ch
     out PIC_SLAVE_DATA, al
 
+    ret
+
+; EOI on master PIC
+global irq_eoi_master
+irq_eoi_master:
+    mov al, 0x20
+    out PIC_MASTER, al
+    ret
+
+; EOI on slave PIC
+global irq_eoi_slave
+irq_eoi_slave:
+    mov al, 0x20
+    out PIC_SLAVE, al
     ret
