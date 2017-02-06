@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <arch/frame_buffer.h>
+#include <arch/tty.h>
 #include <kernel/io.h>
 
 namespace kernel {
@@ -11,12 +11,13 @@ namespace io {
     static int kprintf_internal(const char* fmt, va_list args) {
         int result = 0;
         char buffer[65];
+        char* str;
 
         while (*fmt != '\0') {
             char c = *fmt++;
 
             if (c != '%') {
-                frame_buffer::print(c);
+                tty::print(c);
                 ++result;
                 continue;
             }
@@ -24,36 +25,38 @@ namespace io {
             c = *fmt++;
             switch(c) {
                 case '%':
-                    frame_buffer::print('%');
+                    tty::print('%');
                     ++result;
                     break;
                 case 's':
-                    frame_buffer::print(va_arg(args, char*));
+                    str = va_arg(args, char*);
+                    result += strlen(str);
+                    tty::print(str);
                     break;
                 case 'c':
-                    frame_buffer::print((char)va_arg(args, int));
+                    tty::print((char)va_arg(args, int));
                     ++result;
                     break;
                 case 'i':
                 case 'd':
                     result += itoa(va_arg(args, int), buffer);
-                    frame_buffer::print(buffer);
+                    tty::print(buffer);
                     break;
                 case 'b':
                     result += utoa(va_arg(args, unsigned), buffer, 2);
-                    frame_buffer::print(buffer);
+                    tty::print(buffer);
                     break;
                 case 'o':
                     result += utoa(va_arg(args, unsigned), buffer, 8);
-                    frame_buffer::print(buffer);
+                    tty::print(buffer);
                     break;
                 case 'x':
                     result += utoa(va_arg(args, unsigned), buffer, 16);
-                    frame_buffer::print(buffer);
+                    tty::print(buffer);
                     break;
                 case 'u':
                     result += utoa(va_arg(args, unsigned), buffer);
-                    frame_buffer::print(buffer);
+                    tty::print(buffer);
                     break;
                 default:
                     // TODO: Handle invalid format specifier

@@ -9,10 +9,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <arch/frame_buffer.h>
 #include <arch/gdt.h>
 #include <arch/interrupt.h>
 #include <arch/keyboard.h>
+#include <arch/tty.h>
 
 #include <kernel/io.h>
 
@@ -20,7 +20,7 @@ using namespace kernel;
 using namespace kernel::io;
 
 extern "C" void kinit() {
-    frame_buffer::clear();
+    tty::init();
 
     // Hardware-related initialization
     gdt::init();
