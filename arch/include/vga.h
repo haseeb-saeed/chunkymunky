@@ -4,12 +4,14 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <kernel/enum.h>
+
 namespace kernel {
 namespace vga {
     typedef uint8_t Vga_color;
     typedef uint16_t Vga_entry;
 
-    enum class Color : uint8_t {
+    KENUM(Color, uint8_t) {
         BLACK,
         BLUE,
         GREEN,
@@ -29,11 +31,11 @@ namespace vga {
     };
 
     static inline Vga_color make_color(Color fg, Color bg) {
-        return ((uint8_t)bg << 4) | (uint8_t)fg;
+        return (underlying_type(bg) << 4) | underlying_type(fg);
     }
 
     static inline Vga_entry make_entry(char c, Vga_color color) {
-        return ((uint16_t)color << 8) | (uint16_t)c;
+        return (color << 8) | c;
     }
 }
 }
