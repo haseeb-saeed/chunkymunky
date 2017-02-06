@@ -25,7 +25,7 @@ namespace tty {
     }
 
     void init() {
-        current_color = make_color(LIGHT_GREY, BLACK);
+        current_color = make_color(Color::LIGHT_GREY, Color::BLACK);
         default_color = current_color;
         clear();
     }

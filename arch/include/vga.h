@@ -9,7 +9,7 @@ namespace vga {
     typedef uint8_t Vga_color;
     typedef uint16_t Vga_entry;
 
-    enum Color {
+    enum class Color : uint8_t {
         BLACK,
         BLUE,
         GREEN,
@@ -29,7 +29,7 @@ namespace vga {
     };
 
     static inline Vga_color make_color(Color fg, Color bg) {
-        return (bg << 4) | fg;
+        return ((uint8_t)bg << 4) | (uint8_t)fg;
     }
 
     static inline Vga_entry make_entry(char c, Vga_color color) {
@@ -38,4 +38,4 @@ namespace vga {
 }
 }
 
-#endif
+#endif // __ARCH_VGA_H__
