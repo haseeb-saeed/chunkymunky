@@ -171,14 +171,13 @@ namespace interrupt {
         klog(Log_type::INIT, "IDT loaded at 0x%x\n", idt_ptr.base);
     }
 
-    // TODO: Replace the index with an enum
-    // Use the enum to find the index in a lookup table?
-    // Would this really be necessary?
-    void add_handler(size_t index, Interrupt_handler f) {
+    void add_handler(Interrupt_type type, Interrupt_handler f) {
+        size_t index = underlying_type(type);
+
         if (index < NUM_ENTRIES) {
             handlers[index] = f;
         } else {
-            // TODO: Panic?
+            klog(Log_type::WARNING, "Attempted to add interrupt handler for non-existent interrupt%u\n", index);
         }
     }
 }
