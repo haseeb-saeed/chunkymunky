@@ -1,11 +1,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <arch/frame_buffer.h>
 #include <arch/interrupt.h>
+#include <kernel/io.h>
 
 #define ADD_ISR_HANDLER(NUM, SEL, FLAGS) \
     set_idt_gate(NUM, (uint32_t)&isr##NUM, SEL, FLAGS);
+
+using namespace kernel::io;
 
 extern "C" void load_idt(uint32_t idt_ptr);
 extern "C" void remap_irq();
@@ -86,7 +88,7 @@ namespace interrupt {
 
     static void set_idt_gate(size_t index, uint32_t base, uint16_t sel, uint8_t flags) {
         if (index >= NUM_ENTRIES) {
-            // TODO: Panic or something
+            kpanic("Setting idt gate for out of bounds index: %u\n", (unsigned)index);
             return;
         }
 
@@ -99,19 +101,13 @@ namespace interrupt {
 
     extern "C" void handle_interrupt(Interrupt_frame* frame) {
         if (frame->int_num >= NUM_ENTRIES) {
-            // TODO: Panic
+            kpanic("Unknown interrupt caught: %u\n", frame->int_num);
         }
 
         Interrupt_handler handler = handlers[frame->int_num];
         if (handler != nullptr) {
             handler(frame);
         }
-
-        /*
-        kernel::frame_buffer::print("Interrupt: ");
-        kernel::frame_buffer::print((int)frame->int_num);
-        kernel::frame_buffer::print("\n");
-        */
 
         // Notify master and slave ports that we've handled the irq
         if (is_irq(frame->int_num)) {
@@ -171,6 +167,8 @@ namespace interrupt {
 
         load_idt((uint32_t)&idt_ptr);
         enable_interrupts();
+
+        kprintf("IDT loaded at 0x%x\n", idt_ptr.base);
     }
 
     // TODO: Replace the index with an enum

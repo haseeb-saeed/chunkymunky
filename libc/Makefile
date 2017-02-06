@@ -23,6 +23,10 @@ string/memmove.o \
 string/memset.o \
 string/memchr.o \
 string/memcmp.o \
+string/strlen.o \
+string/strrev.o \
+string/itoa.o \
+string/utoa.o \
 
 LIBK_OBJS=$(OBJS:.o=.libk.o)
 BINARIES=libk.a

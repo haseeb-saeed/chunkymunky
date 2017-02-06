@@ -14,7 +14,10 @@
 #include <arch/interrupt.h>
 #include <arch/keyboard.h>
 
+#include <kernel/io.h>
+
 using namespace kernel;
+using namespace kernel::io;
 
 extern "C" void kinit() {
     frame_buffer::clear();
@@ -23,10 +26,12 @@ extern "C" void kinit() {
     gdt::init();
     interrupt::init_idt();
     keyboard::init();
+
+    kprintf("\n");
 }
 
 extern "C" void kmain() {
-    frame_buffer::print("Starting OS...\n");
+    kprintf("Starting ChunkyMunkyOS v0.1\n");
 
     // Loop for interrupt testing
     for (;;) {

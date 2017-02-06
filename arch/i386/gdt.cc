@@ -2,6 +2,9 @@
 #include <stdint.h>
 
 #include <arch/gdt.h>
+#include <kernel/io.h>
+
+using namespace kernel::io;
 
 extern "C" void flush_gdt(uint32_t gdt_ptr);
 
@@ -54,6 +57,7 @@ namespace gdt {
         set_gate(2, ENTRY_BASE, ENTRY_LIMIT, 0x92, 0xCF);
 
         flush_gdt((uint32_t)&gdt_ptr);
+        kprintf("GDT loaded at 0x%x\n", gdt_ptr.base);
     }
 }
 }

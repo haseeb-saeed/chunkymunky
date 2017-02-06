@@ -31,6 +31,7 @@ LIBS:=$(LIBS) $(ARCH_LIBS)
 
 OBJS:=\
 $(ARCH_OBJS) \
+kernel/io.o \
 kernel/kmain.o \
 
 CRTI_OBJ:=$(ARCHDIR)/crti.o
@@ -72,6 +73,7 @@ install: install-headers# install-kernel
 install-headers:
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
 	cp -RTv arch/include $(DESTDIR)$(INCLUDEDIR)/arch
+	cp -RTv kernel/include $(DESTDIR)$(INCLUDEDIR)/kernel
 #
 #install-kernel: chunkymunky.kernel
 #	mkdir -p $(DESTDIR)$(BOOTDIR)
