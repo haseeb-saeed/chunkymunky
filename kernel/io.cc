@@ -78,7 +78,26 @@ namespace io {
         return result;
     }
 
-    // TODO: Consolidate all printing into a klog function with flags?
+    void klog(Log_type type, const char* fmt, ...) {
+        va_list args;
+
+        switch(type) {
+            case Log_type::INIT:
+                kprintf("INIT: ");
+                break;
+            case Log_type::KEYBOARD:
+                kprintf("KEYBOARD: ");
+            case Log_type::WARNING:
+            case Log_type::ERROR:
+            default:
+                break;
+        }
+
+        va_start(args, fmt);
+        kprintf_internal(fmt, args);
+        va_end(args);
+    }
+
     void kpanic(const char* fmt, ...) {
         va_list args;
 
@@ -88,16 +107,6 @@ namespace io {
         va_end(args);
 
         // TODO: Aboort/halt
-    }
-
-    void kerror(const char* fmt, ...) {
-        // TODO: Redirect to file or stderr
-        va_list args;
-
-        kprintf("Error: ");
-        va_start(args, fmt);
-        kprintf_internal(fmt, args);
-        va_end(args);
     }
 }
 }

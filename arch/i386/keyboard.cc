@@ -13,12 +13,12 @@ namespace kernel {
 namespace keyboard {
     void handle_input(interrupt::Interrupt_frame* frame) {
         uint8_t key = get_keyboard_input();
-        kprintf("Keyboard handler! %d\n", key);
+        klog(Log_type::KEYBOARD, "%d\n", key);
     }
 
     void init() {
         interrupt::add_handler(33, &handle_input);
-        kprintf("Keyboard initialized\n");
+        klog(Log_type::INIT, "Keyboard initialized\n");
     }
 }
 }

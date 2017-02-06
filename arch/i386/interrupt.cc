@@ -168,7 +168,7 @@ namespace interrupt {
         load_idt((uint32_t)&idt_ptr);
         enable_interrupts();
 
-        kprintf("IDT loaded at 0x%x\n", idt_ptr.base);
+        klog(Log_type::INIT, "IDT loaded at 0x%x\n", idt_ptr.base);
     }
 
     // TODO: Replace the index with an enum

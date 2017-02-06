@@ -34,7 +34,7 @@ namespace gdt {
 
     static void set_gate(size_t index, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity) {
         if (index >= NUM_ENTRIES) {
-            // TODO: Panic or something
+            kpanic("Setting gdt gate for out of bounds index: %u\n", (unsigned)index);
             return;
         }
 
@@ -57,7 +57,7 @@ namespace gdt {
         set_gate(2, ENTRY_BASE, ENTRY_LIMIT, 0x92, 0xCF);
 
         flush_gdt((uint32_t)&gdt_ptr);
-        kprintf("GDT loaded at 0x%x\n", gdt_ptr.base);
+        klog(Log_type::INIT, "GDT loaded at 0x%x\n", gdt_ptr.base);
     }
 }
 }

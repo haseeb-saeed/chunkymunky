@@ -3,9 +3,16 @@
 
 namespace kernel {
 namespace io {
+    enum class Log_type {
+        INIT,
+        WARNING,
+        ERROR,
+        KEYBOARD,
+    };
+
     int kprintf(const char* fmt, ...);
-    void kpanic(const char* fmt, ...);      // For non-recoverable errors
-    void kerror(const char* fmt, ...);      // For recoverable errors
+    void klog(Log_type type, const char* fmt, ...);
+    void kpanic(const char* fmt, ...);
 }
 }
 
