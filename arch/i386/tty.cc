@@ -12,7 +12,7 @@ namespace tty {
     static const size_t WIDTH = 80;
     static const size_t HEIGHT = 25;
     static size_t row, column;
-    static Vga_entry* buffer = (Vga_entry*)0xB8000;
+    static Vga_entry* buffer = (Vga_entry*)0xC00B8000;
     static Vga_color current_color, default_color;
 
     static void scroll() {

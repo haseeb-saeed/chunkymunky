@@ -5,29 +5,30 @@ SECTIONS
 {
     /* Begin putting code at 0x00100000 */
     /* When paging is done, move to 0xC0100000 */
-    . = 0x00100000;
+    KERNEL_BASE = 0xC0000000;
+    . = 0x00100000 + KERNEL_BASE;
 
     /* Multiboot header and text */
-    .text BLOCK(0x1000) : ALIGN(0x1000)
+    .text ALIGN(0x1000) : AT(ADDR(.text) - KERNEL_BASE)
     {
         *(.multiboot)
         *(.text)
     }
 
     /* Read-only data */
-    .rodata BLOCK(0x1000) : ALIGN(0x1000)
+    .rodata ALIGN(0x1000) : AT(ADDR(.rodata) - KERNEL_BASE)
     {
         *(.rodata)
     }
 
     /* Read-write data (initialized) */
-    .data BLOCK(0x1000) : ALIGN(0x1000)
+    .data ALIGN(0x1000) : AT(ADDR(.data) - KERNEL_BASE)
     {
         *(.data)
     }
 
     /* Read-write data (uninitialized) */
-    .bss BLOCK(0x1000) : ALIGN(0x1000)
+    .bss ALIGN(0x1000) : AT(ADDR(.bss) - KERNEL_BASE)
     {
         *(.COMMON)
         *(.bss)
