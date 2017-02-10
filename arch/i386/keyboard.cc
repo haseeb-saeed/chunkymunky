@@ -5,12 +5,12 @@
 #include <arch/keyboard.h>
 #include <kernel/io.h>
 
-using namespace Kernel::Interrupt;
+using namespace Arch::Interrupt;
 using namespace Kernel::Io;
 
 extern "C" uint8_t get_keyboard_input();
 
-namespace Kernel {
+namespace Arch {
 namespace Keyboard {
     void handle_input(Interrupt_frame* frame) {
         uint8_t key = get_keyboard_input();

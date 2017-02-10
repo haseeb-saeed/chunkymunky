@@ -6,6 +6,8 @@
 #include <arch/tty.h>
 #include <kernel/io.h>
 
+using namespace Arch;
+
 namespace Kernel {
 namespace Io {
     namespace {

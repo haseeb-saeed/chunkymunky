@@ -1,10 +1,10 @@
-#ifndef __GDT_H__
-#define __GDT_H__
+#ifndef __ARCH_GDT_H__
+#define __ARCH_GDT_H__
 
-namespace Kernel {
+namespace Arch {
 namespace Gdt {
     void init();
 }
 }
 
-#endif // __GDT_H__
+#endif // __ARCH_GDT_H__

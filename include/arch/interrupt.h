@@ -1,5 +1,5 @@
-#ifndef __INTERRUPT_H__
-#define __INTERRUPT_H__
+#ifndef __ARCH_INTERRUPT_H__
+#define __ARCH_INTERRUPT_H__
 
 #if defined(__i386__)
 #include <arch/i386/interrupt_frame.h>
@@ -8,7 +8,7 @@
 #error "No interrupt_frame.h for specified platform"
 #endif
 
-namespace Kernel {
+namespace Arch {
 namespace Interrupt {
     typedef void (*Interrupt_handler)(Interrupt_frame* frame);
 

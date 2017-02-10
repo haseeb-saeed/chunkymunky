@@ -5,9 +5,9 @@
 #include <arch/tty.h>
 #include <arch/vga.h>
 
-using namespace Kernel::Vga;
+using namespace Arch::Vga;
 
-namespace Kernel {
+namespace Arch {
 namespace Tty {
     namespace {
         const size_t WIDTH = 80;

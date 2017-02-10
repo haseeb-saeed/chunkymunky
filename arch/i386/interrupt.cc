@@ -50,7 +50,7 @@ extern "C" void isr31();
 extern "C" void isr32();
 extern "C" void isr33();
 
-namespace Kernel {
+namespace Arch {
 namespace Interrupt {
     namespace {
         const size_t NUM_ENTRIES = 256;

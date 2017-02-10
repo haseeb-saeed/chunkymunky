@@ -6,7 +6,7 @@
 
 #include <kernel/enum.h>
 
-namespace Kernel {
+namespace Arch {
 namespace Vga {
     typedef uint8_t Vga_color;
     typedef uint16_t Vga_entry;

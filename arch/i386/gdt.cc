@@ -8,7 +8,7 @@ using namespace Kernel::Io;
 
 extern "C" void flush_gdt(uint32_t gdt_ptr);
 
-namespace Kernel {
+namespace Arch {
 namespace Gdt {
     namespace {
         const uint32_t ENTRY_BASE = 0;

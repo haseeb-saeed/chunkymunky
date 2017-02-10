@@ -1,7 +1,7 @@
 #ifndef __I386_INTERRUPT_FRAME_H__
 #define __I386_INTERRUPT_FRAME_H__
 
-namespace Kernel {
+namespace Arch {
 namespace Interrupt {
     struct Interrupt_frame {
         uint32_t gs, fs, es, ds;

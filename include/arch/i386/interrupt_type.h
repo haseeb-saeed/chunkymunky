@@ -6,7 +6,7 @@
 
 #include <kernel/enum.h>
 
-namespace Kernel {
+namespace Arch {
 namespace Interrupt {
     KENUM(Interrupt_type, size_t) {
         PAGE_FAULT = 14,

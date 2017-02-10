@@ -16,18 +16,13 @@
 #include <arch/keyboard.h>
 #include <arch/tty.h>
 
+#include <kernel/addr.h>
 #include <kernel/io.h>
 
-using namespace Kernel;
+using namespace Arch;
 using namespace Kernel::Io;
 
-struct kernel_addr {
-    unsigned kernel_vaddr_low;
-    unsigned kernel_vaddr_high;
-    unsigned kernel_paddr_low;
-    unsigned kernel_paddr_high;
-};
-
+namespace Kernel {
 extern "C" void kinit() {
     Tty::init();
 
@@ -39,11 +34,14 @@ extern "C" void kinit() {
     kprintf("\n");
 }
 
-extern "C" void kmain(multiboot_info_t* mbd, kernel_addr *kaddr) {
+extern "C" void kmain(multiboot_info_t* mbd, Kernel_addr *kaddr) {
     kprintf("Starting ChunkyMunkyOS v0.1\n");
+    kprintf("Kernel loaded at 0x%x phsyical 0x%x virtual\n", kaddr->kernel_paddr_low, kaddr->kernel_vaddr_low);
+    kprintf("Free memory starts at 0x%x phsyical 0x%x virtual\n", kaddr->kernel_paddr_high, kaddr->kernel_vaddr_high);
 
     // Loop for interrupt testing
     for (;;) {
         asm("hlt");
     }
+}
 }

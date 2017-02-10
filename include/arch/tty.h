@@ -3,13 +3,13 @@
 
 #include <arch/vga.h>
 
-namespace Kernel {
+namespace Arch {
 namespace Tty {
     void init();
     void clear();
-    void set_color(Kernel::Vga::Vga_color color);
-    void set_default_color(Kernel::Vga::Vga_color color);
-    void reset_color(Kernel::Vga::Vga_color color);
+    void set_color(Vga::Vga_color color);
+    void set_default_color(Vga::Vga_color color);
+    void reset_color(Vga::Vga_color color);
     void print(char c);
     void print(const char* str);
 }
