@@ -12,7 +12,7 @@ namespace Kernel {
 namespace Interrupt {
     typedef void (*Interrupt_handler)(Interrupt_frame* frame);
 
-    void init_idt();
+    void init();
     void add_handler(Interrupt_type type, Interrupt_handler f);
     extern "C" {
         void enable_interrupts();

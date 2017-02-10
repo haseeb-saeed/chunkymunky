@@ -141,7 +141,7 @@ namespace Interrupt {
         }
     }
 
-    void init_idt() {
+    void init() {
         idt_ptr.limit = sizeof(idt) - 1;
         idt_ptr.base = (uint32_t)&idt;
 

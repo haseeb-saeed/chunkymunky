@@ -33,7 +33,7 @@ extern "C" void kinit() {
 
     // Hardware-related initialization
     Gdt::init();
-    Interrupt::init_idt();
+    Interrupt::init();
     Keyboard::init();
 
     kprintf("\n");
