@@ -18,8 +18,8 @@
 
 #include <kernel/io.h>
 
-using namespace kernel;
-using namespace kernel::io;
+using namespace Kernel;
+using namespace Kernel::Io;
 
 struct kernel_addr {
     unsigned kernel_vaddr_low;
@@ -29,12 +29,12 @@ struct kernel_addr {
 };
 
 extern "C" void kinit() {
-    tty::init();
+    Tty::init();
 
     // Hardware-related initialization
-    gdt::init();
-    interrupt::init_idt();
-    keyboard::init();
+    Gdt::init();
+    Interrupt::init_idt();
+    Keyboard::init();
 
     kprintf("\n");
 }

@@ -5,13 +5,13 @@
 #include <arch/keyboard.h>
 #include <kernel/io.h>
 
-using namespace kernel::interrupt;
-using namespace kernel::io;
+using namespace Kernel::Interrupt;
+using namespace Kernel::Io;
 
 extern "C" uint8_t get_keyboard_input();
 
-namespace kernel {
-namespace keyboard {
+namespace Kernel {
+namespace Keyboard {
     void handle_input(Interrupt_frame* frame) {
         uint8_t key = get_keyboard_input();
         klog(Log_type::KEYBOARD, "%d\n", key);

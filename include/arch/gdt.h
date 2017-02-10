@@ -1,8 +1,8 @@
 #ifndef __GDT_H__
 #define __GDT_H__
 
-namespace kernel {
-namespace gdt {
+namespace Kernel {
+namespace Gdt {
     void init();
 }
 }

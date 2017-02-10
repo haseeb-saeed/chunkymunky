@@ -6,8 +6,8 @@
 
 #include <kernel/enum.h>
 
-namespace kernel {
-namespace vga {
+namespace Kernel {
+namespace Vga {
     typedef uint8_t Vga_color;
     typedef uint16_t Vga_entry;
 
@@ -30,11 +30,11 @@ namespace vga {
         WHITE,
     };
 
-    static inline Vga_color make_color(Color fg, Color bg) {
+    inline Vga_color make_color(Color fg, Color bg) {
         return (underlying_type(bg) << 4) | underlying_type(fg);
     }
 
-    static inline Vga_entry make_entry(char c, Vga_color color) {
+    inline Vga_entry make_entry(char c, Vga_color color) {
         return (color << 8) | c;
     }
 }

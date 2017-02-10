@@ -8,8 +8,8 @@
 #error "No interrupt_frame.h for specified platform"
 #endif
 
-namespace kernel {
-namespace interrupt {
+namespace Kernel {
+namespace Interrupt {
     typedef void (*Interrupt_handler)(Interrupt_frame* frame);
 
     void init_idt();

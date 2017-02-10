@@ -1,8 +1,8 @@
 #ifndef __KERNEL_IO_H__
 #define __KERNEL_IO_H__
 
-namespace kernel {
-namespace io {
+namespace Kernel {
+namespace Io {
     enum class Log_type {
         INIT,
         WARNING,

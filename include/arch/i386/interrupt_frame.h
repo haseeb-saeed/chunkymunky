@@ -1,8 +1,8 @@
 #ifndef __I386_INTERRUPT_FRAME_H__
 #define __I386_INTERRUPT_FRAME_H__
 
-namespace kernel {
-namespace interrupt {
+namespace Kernel {
+namespace Interrupt {
     struct Interrupt_frame {
         uint32_t gs, fs, es, ds;
         uint32_t edi, esi, ebp, useless;

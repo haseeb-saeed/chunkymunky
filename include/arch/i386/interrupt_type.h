@@ -6,8 +6,8 @@
 
 #include <kernel/enum.h>
 
-namespace kernel {
-namespace interrupt {
+namespace Kernel {
+namespace Interrupt {
     KENUM(Interrupt_type, size_t) {
         PAGE_FAULT = 14,
         PIT = 32,

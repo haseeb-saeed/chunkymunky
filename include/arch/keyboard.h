@@ -1,8 +1,8 @@
 #ifndef __ARCH_KEYBOARD_H__
 #define __ARCH_KEYBOARD_H__
 
-namespace kernel {
-namespace keyboard {
+namespace Kernel {
+namespace Keyboard {
     void init();
 }
 }

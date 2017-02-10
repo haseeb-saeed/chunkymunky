@@ -5,23 +5,25 @@
 #include <arch/tty.h>
 #include <arch/vga.h>
 
-using namespace kernel::vga;
+using namespace Kernel::Vga;
 
-namespace kernel {
-namespace tty {
-    static const size_t WIDTH = 80;
-    static const size_t HEIGHT = 25;
-    static size_t row, column;
-    static Vga_entry* buffer = (Vga_entry*)0xC00B8000;
-    static Vga_color current_color, default_color;
+namespace Kernel {
+namespace Tty {
+    namespace {
+        const size_t WIDTH = 80;
+        const size_t HEIGHT = 25;
+        size_t row, column;
+        Vga_entry* const buffer = (Vga_entry*)0xC00B8000;
+        Vga_color current_color, default_color;
 
-    static void scroll() {
-        memmove(buffer, buffer + WIDTH, WIDTH * (HEIGHT - 1) * sizeof(*buffer));
-        for (size_t i = WIDTH * (HEIGHT - 1); i < WIDTH * HEIGHT; ++i) {
-            buffer[i] = make_entry(0, current_color);
+        void scroll() {
+            memmove(buffer, buffer + WIDTH, WIDTH * (HEIGHT - 1) * sizeof(*buffer));
+            for (size_t i = WIDTH * (HEIGHT - 1); i < WIDTH * HEIGHT; ++i) {
+                buffer[i] = make_entry(0, current_color);
+            }
+
+            row -= 1;
         }
-
-        row -= 1;
     }
 
     void init() {
