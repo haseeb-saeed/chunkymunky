@@ -8,6 +8,11 @@ PAGEDIRSIZE equ 1024
 KERNELBASE  equ 0xC0000000
 DIRENTRY    equ (KERNELBASE >> 22)
 
+extern kernel_vaddr_low
+extern kernel_paddr_low
+extern kernel_vaddr_high
+extern kernel_paddr_high
+
 ; Declare a multiboot header
 section .multiboot
 align 0x4
@@ -66,6 +71,17 @@ _start:
 
     ; Move the stack pointer to the top of the kernel stack
     mov esp, stack_top
+
+    ; Push the kernel address information on the stack
+    push kernel_paddr_high
+    push kernel_paddr_low
+    push kernel_vaddr_high
+    push kernel_vaddr_low
+    push esp
+
+    ; Push the multiboot info on the stack
+    add ebx, KERNELBASE
+    push ebx
 
     ; Initialize the kernel
     extern kinit

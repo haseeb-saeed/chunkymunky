@@ -1,5 +1,4 @@
 file chunkymunky.kernel
-break kinit
-break handle_interrupt
 break kmain
+set print pretty
 target remote localhost:1234
