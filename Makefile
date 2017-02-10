@@ -9,14 +9,14 @@ LIBS?=
 DESTDIR?=sysroot
 PREFIX?=/usr/local
 EXEC_PREFIX?=$(PREFIX)
-#BOOTDIR?=$(EXEC_PREFIX)/boot
+BOOTDIR?=/boot
 INCLUDEDIR?=$(PREFIX)/include
 LIBDIR?=$(EXEC_PREFIX)/lib
 
-CXX:=$(HOST)-g++
+CXX:=$(HOST)-g++ --sysroot=$(DESTDIR) -isystem=$(INCLUDEDIR)
 NASM:=nasm
 
-CPPFLAGS:=$(CPPFLAGS) -ffreestanding -Wall -Wextra -fno-exceptions -I$(DESTDIR)$(INCLUDEDIR)
+CPPFLAGS:=$(CPPFLAGS) -ffreestanding -Wall -Wextra -fno-exceptions -Iinclude
 ASMFLAGS:=-felf32
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS) -nostdlib -lgcc -L $(DESTDIR)$(LIBDIR) -lk
@@ -53,7 +53,7 @@ $(CRTN_OBJ) \
 
 all: chunkymunky.kernel
 
-.PHONY: all clean install install-headers# install-kernel
+.PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .cc .asm
 
 chunkymunky.kernel: $(OBJ_LINK_LIST) $(ARCHDIR)/linker.ld
@@ -68,13 +68,12 @@ chunkymunky.kernel: $(OBJ_LINK_LIST) $(ARCHDIR)/linker.ld
 clean:
 	rm -f chunkymunky.kernel $(OBJS) $(ALL_OUR_OBJS) *.o */*.o */*/*.o
 
-install: install-headers# install-kernel
+install: install-headers install-kernel
 
 install-headers:
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
-	cp -RTv arch/include $(DESTDIR)$(INCLUDEDIR)/arch
-	cp -RTv kernel/include $(DESTDIR)$(INCLUDEDIR)/kernel
-#
-#install-kernel: chunkymunky.kernel
-#	mkdir -p $(DESTDIR)$(BOOTDIR)
-#	cp chunkymunky.kernel $(DESTDIR)$(BOOTDIR)
+	cp -RTv include $(DESTDIR)$(INCLUDEDIR)
+
+install-kernel: chunkymunky.kernel
+	mkdir -p $(DESTDIR)$(BOOTDIR)
+	cp chunkymunky.kernel $(DESTDIR)$(BOOTDIR)
