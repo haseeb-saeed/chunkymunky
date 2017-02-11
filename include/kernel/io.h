@@ -8,6 +8,7 @@ namespace Io {
         WARNING,
         ERROR,
         KEYBOARD,
+        PAGING,
     };
 
     int kprintf(const char* fmt, ...);

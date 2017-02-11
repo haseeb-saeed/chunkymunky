@@ -91,6 +91,8 @@ namespace Io {
                 break;
             case Log_type::KEYBOARD:
                 kprintf("KEYBOARD: ");
+            case Log_type::PAGING:
+                kprintf("PAGING: ");
             case Log_type::WARNING:
             case Log_type::ERROR:
             default:

@@ -3,10 +3,10 @@
 
 namespace Kernel {
     struct Kernel_addr {
-        unsigned kernel_vaddr_low;
-        unsigned kernel_vaddr_high;
-        unsigned kernel_paddr_low;
-        unsigned kernel_paddr_high;
+        unsigned vaddr_start;
+        unsigned vaddr_end;
+        unsigned base;
+        unsigned physical_start;
     };
 }
 

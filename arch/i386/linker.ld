@@ -6,10 +6,10 @@ SECTIONS
     /* Begin putting code at 0x00100000 */
     /* When paging is done, move to 0xC0100000 */
     KERNEL_BASE = 0xC0000000;
-    . = 0x00100000 + KERNEL_BASE;
+    PHYSICAL_START = 0x00100000;
+    . = PHYSICAL_START + KERNEL_BASE;
 
     kernel_vaddr_low = .;
-    kernel_paddr_low = kernel_vaddr_low - KERNEL_BASE;
 
     /* Multiboot header and text */
     .text ALIGN(0x1000) : AT(ADDR(.text) - KERNEL_BASE)
@@ -38,5 +38,4 @@ SECTIONS
     }
 
     kernel_vaddr_high = .;
-    kernel_paddr_high = kernel_vaddr_high - KERNEL_BASE;
 }

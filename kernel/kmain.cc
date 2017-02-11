@@ -14,6 +14,7 @@
 #include <arch/gdt.h>
 #include <arch/interrupt.h>
 #include <arch/keyboard.h>
+#include <arch/memory.h>
 #include <arch/tty.h>
 
 #include <kernel/addr.h>
@@ -23,7 +24,7 @@ using namespace Arch;
 using namespace Kernel::Io;
 
 namespace Kernel {
-extern "C" void kinit() {
+extern "C" void kinit(multiboot_info_t* mbd, Kernel_addr *kaddr) {
     Tty::init();
 
     // Hardware-related initialization
@@ -31,17 +32,20 @@ extern "C" void kinit() {
     Interrupt::init();
     Keyboard::init();
 
+    // Memory initialization
+    Memory::Pm_manager::init(mbd, kaddr);
+
     kprintf("\n");
 }
 
 extern "C" void kmain(multiboot_info_t* mbd, Kernel_addr *kaddr) {
     kprintf("Starting ChunkyMunkyOS v0.1\n");
-    kprintf("Kernel loaded at 0x%x phsyical 0x%x virtual\n", kaddr->kernel_paddr_low, kaddr->kernel_vaddr_low);
-    kprintf("Free memory starts at 0x%x phsyical 0x%x virtual\n", kaddr->kernel_paddr_high, kaddr->kernel_vaddr_high);
+    kprintf("Kernel loaded at 0x%x\n", kaddr->vaddr_start);
+    kprintf("Kernel space starts at 0x%x\n", kaddr->base);
+    kprintf("Free memory starts at 0x%x\n", kaddr->vaddr_end);
 
-    // Loop for interrupt testing
-    for (;;) {
-        asm("hlt");
+    for (int i = 0; i < 15; ++i) {
+        Memory::Pm_manager::alloc_frame();
     }
 }
 }

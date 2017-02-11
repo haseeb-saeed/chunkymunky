@@ -8,10 +8,10 @@ PAGEDIRSIZE equ 1024
 KERNELBASE  equ 0xC0000000
 DIRENTRY    equ (KERNELBASE >> 22)
 
+; Defined in linker.ld
 extern kernel_vaddr_low
-extern kernel_paddr_low
 extern kernel_vaddr_high
-extern kernel_paddr_high
+extern PHYSICAL_START
 
 ; Declare a multiboot header
 section .multiboot
@@ -73,8 +73,8 @@ _start:
     mov esp, stack_top
 
     ; Push the kernel address information on the stack
-    push kernel_paddr_high
-    push kernel_paddr_low
+    push PHYSICAL_START
+    push KERNELBASE
     push kernel_vaddr_high
     push kernel_vaddr_low
     push esp
