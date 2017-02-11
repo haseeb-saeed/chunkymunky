@@ -23,21 +23,20 @@ namespace Pm_manager {
         size_t num_frames;
         size_t frames_per_block;
         size_t free_block;
-        Paddr start_frame;
 
         inline size_t get_block(Paddr paddr) {
-            paddr -= start_frame;
-            return (paddr / FRAME_SIZE) / frames_per_block;
+            paddr -= START_FRAME;
+            return (paddr / PAGE_SIZE) / frames_per_block;
         }
 
         inline int get_offset(Paddr paddr) {
-            paddr -= start_frame;
-            return (paddr / FRAME_SIZE) % frames_per_block;
+            paddr -= START_FRAME;
+            return (paddr / PAGE_SIZE) % frames_per_block;
         }
 
         inline Paddr to_paddr(size_t block, int offset) {
             Paddr paddr = block * frames_per_block + offset;
-            return (paddr * FRAME_SIZE) + start_frame;
+            return (paddr * PAGE_SIZE) + START_FRAME;
         }
     }
 
@@ -47,10 +46,9 @@ namespace Pm_manager {
         }
 
         // Get the number of frames
-        num_frames = (mbd->mem_upper * 1024) / FRAME_SIZE;
+        num_frames = ((mbd->mem_upper * 1024) - START_FRAME) / PAGE_SIZE;
         frames_per_block = sizeof(*bitmap) * CHAR_BIT;
         num_blocks = num_frames / frames_per_block;
-        start_frame = kaddr->physical_start;
         free_block = 0;
 
         // Allocate memory for the bitmap (align to 4 bytes)

@@ -29,11 +29,10 @@ namespace Memory {
     }
 
     namespace Vm_manager {
-        void init();
+        void init(Kernel::Kernel_addr* kaddr);
         Vaddr alloc_page();
         void free_page(Vaddr vaddr);
         Paddr to_paddr(Vaddr vaddr);
-        Vaddr to_paddr(Paddr paddr);
     }
 
     // TODO: We'll need a heap manager

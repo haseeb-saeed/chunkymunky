@@ -31,9 +31,8 @@ align 0x4
 ; Allocate the kernel's page directory
 ; Page directory must be 4KB aligned
 align 0x1000
-    global kpage_dir
-    resd PAGEDIRSIZE
     kpage_dir:
+    resd PAGEDIRSIZE
 
 ; _start is the entry point
 section .text
@@ -44,6 +43,11 @@ _start:
     mov eax, 0x00000083
     mov [kpage_dir_paddr], eax
     mov [kpage_dir_paddr + DIRENTRY * 4], eax
+
+    ; Fractal map the last entry
+    lea eax, [kpage_dir_paddr]
+    or eax, 0x3
+    mov [kpage_dir_paddr + (PAGEDIRSIZE - 1) * 4], eax
 
     ; Load the page table
     mov eax, kpage_dir_paddr
