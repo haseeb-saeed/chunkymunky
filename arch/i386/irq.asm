@@ -54,3 +54,18 @@ global get_keyboard_input
 get_keyboard_input:
     in al, 0x60
     ret
+
+; Saves EFLAGS
+global save_irqs
+save_irqs:
+    pushfd
+    pop eax
+    ret
+
+; Restores EFLAGs
+global restore_irqs
+restore_irqs:
+    mov eax, [esp + 4]
+    push eax
+    popfd
+    ret

@@ -19,6 +19,7 @@
 
 #include <kernel/addr.h>
 #include <kernel/io.h>
+#include <kernel/spinlock.h>
 
 using namespace Arch;
 using namespace Arch::Memory;
@@ -48,6 +49,7 @@ extern "C" void kmain(multiboot_info_t* mbd, Kernel_addr *kaddr) {
 
     Paddr frames[5];
 
+    // Frame alloc/free check
     for (int j = 0; j < 2; ++j) {
         for (int i = 0; i < 5; ++i) {
             frames[i] = Pm_manager::alloc_frame();
@@ -57,5 +59,21 @@ extern "C" void kmain(multiboot_info_t* mbd, Kernel_addr *kaddr) {
             Pm_manager::free_frame(frames[i]);
         }
     }
+
+    // Spinlock check
+    Spinlock lock;
+    if (lock.is_acquired()) {
+        kprintf("Lock has is currently held\n");
+    }
+
+    lock.acquire();
+    kprintf("Acquired lock!\n");
+
+    if (lock.is_acquired()) {
+        kprintf("Lock has is currently held\n");
+    }
+
+    lock.release();
+    kprintf("Released lock!\n");
 }
 }

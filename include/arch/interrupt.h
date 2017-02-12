@@ -17,6 +17,8 @@ namespace Interrupt {
     extern "C" {
         void enable_interrupts();
         void disable_interrupts();
+        unsigned save_irqs();
+        void restore_irqs(unsigned irq_state);
     }
 }
 }
