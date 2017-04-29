@@ -33,6 +33,7 @@ OBJS:=\
 $(ARCH_OBJS) \
 kernel/io.o \
 kernel/kmain.o \
+kernel/memory.o \
 kernel/spinlock.o \
 
 CRTI_OBJ:=$(ARCHDIR)/crti.o

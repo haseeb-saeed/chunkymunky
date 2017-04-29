@@ -7,9 +7,11 @@
 #include <arch/memory.h>
 #include <kernel/addr.h>
 #include <kernel/io.h>
+#include <kernel/spinlock.h>
 
 using namespace Kernel;
 using namespace Kernel::Io;
+using namespace Kernel::Lock;
 
 namespace Arch {
 namespace Memory {
@@ -23,6 +25,7 @@ namespace Pm_manager {
         size_t num_frames;
         size_t frames_per_block;
         size_t free_block;
+        Spinlock lock;
 
         inline size_t get_block(Paddr paddr) {
             paddr -= START_FRAME;
@@ -67,6 +70,7 @@ namespace Pm_manager {
         Paddr paddr = 0;
         auto i = free_block;
         int offset;
+        Spinlock_guard guard(lock);
 
         // Find an unallocated frame
         for (; i < num_blocks; ++i) {
@@ -92,6 +96,7 @@ namespace Pm_manager {
     void free_frame(Paddr paddr) {
         auto block = get_block(paddr);
         auto mask = 1 << get_offset(paddr);
+        Spinlock_guard guard(lock);
 
         // Check the frame is allocated
         if ((bitmap[block] & mask) == EMPTY_BLOCK) {

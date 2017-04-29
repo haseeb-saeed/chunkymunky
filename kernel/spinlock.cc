@@ -7,6 +7,7 @@
 using namespace Arch::Interrupt;
 
 namespace Kernel {
+namespace Lock {
     Spinlock::Spinlock(): lock(0) {}
 
     void Spinlock::acquire() {
@@ -35,4 +36,13 @@ namespace Kernel {
         this->lock = 0;
         restore_irqs(state);
     }
+
+    Spinlock_guard::Spinlock_guard(Spinlock& lock): lock(lock) {
+        lock.acquire();
+    }
+
+    Spinlock_guard::~Spinlock_guard() {
+        lock.release();
+    }
+}
 }

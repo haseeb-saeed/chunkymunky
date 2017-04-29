@@ -19,11 +19,13 @@
 
 #include <kernel/addr.h>
 #include <kernel/io.h>
+#include <kernel/memory.h>
 #include <kernel/spinlock.h>
 
 using namespace Arch;
 using namespace Arch::Memory;
 using namespace Kernel::Io;
+using namespace Kernel::Lock;
 
 namespace Kernel {
 extern "C" void kinit(multiboot_info_t* mbd, Kernel_addr *kaddr) {
@@ -35,8 +37,7 @@ extern "C" void kinit(multiboot_info_t* mbd, Kernel_addr *kaddr) {
     Keyboard::init();
 
     // Memory initialization
-    Pm_manager::init(mbd, kaddr);
-    Vm_manager::init(kaddr);
+    Memory::init(mbd, kaddr);
 
     kprintf("\n");
 }

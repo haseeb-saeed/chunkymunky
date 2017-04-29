@@ -8,10 +8,12 @@
 #include <arch/memory.h>
 #include <kernel/addr.h>
 #include <kernel/io.h>
+#include <kernel/spinlock.h>
 
 using namespace Arch::Interrupt;
 using namespace Kernel;
 using namespace Kernel::Io;
+using namespace Kernel::Lock;
 
 namespace Arch {
 namespace Memory {
@@ -79,6 +81,7 @@ namespace Vm_manager {
             }
         };
 
+        Spinlock lock;
         int kernel_start;
         Page_entry* const CURRENT_PAGE_DIR =
             (Page_entry*)(((NUM_DIR_ENTRIES - 1) << 22) | ((NUM_DIR_ENTRIES - 1) << 12));
@@ -125,11 +128,53 @@ namespace Vm_manager {
         klog(Log_type::INIT, "Virtual memory manager initialized\n");
     }
 
-    Vaddr alloc_page() {
-        return 0;
+    Vaddr map_page(Vaddr vaddr, Paddr paddr) {
+        auto dir_index = get_dir_index(vaddr);
+        auto table_index = get_table_index(vaddr);
+        Lock_guard(lock);
+
+        if (!CURRENT_PAGE_DIR[dir_index].is_present()) {
+            auto frame = Pm_manager::alloc_frame();
+
+            // If we cannpt create a page table
+            if (frame == 0) {
+                return 0;
+            }
+
+            CURRENT_PAGE_DIR[dir_index] = Page_entry(frame, Page_entry::PRESENT | Page_entry::WRITEABLE);
+        }
+
+        auto table = (Page_entry*)to_vaddr(dir_index);
+
+        if (table[table_index].is_present()) {
+            kpanic("Page already mapped to 0x%x\n", vaddr);
+        } else {
+            table[table_index] = Page_entry(paddr, Page_entry::PRESENT | Page_entry::WRITEABLE);
+        }
+
+        return vaddr;
     }
 
-    void free_page(Vaddr vaddr) {
+    Paddr unmap_page(Vaddr vaddr) {
+        auto dir_index = get_dir_index(vaddr);
+        auto table_index = get_table_index(vaddr);
+        Lock_guard(lock);
+
+        if (!CURRENT_PAGE_DIR[dir_index].is_present()) {
+            kpanic("Unmapping page from missing table 0x%x\n", vaddr);
+        }
+
+        auto table = (Page_entry*)to_vaddr(dir_index);
+        if (!table[table_index].is_present()) {
+            kpanic("Unmapping page that is not present 0x%x\n", vaddr);
+        }
+
+        // Unmap page
+        // It's up to the caller to free the frame
+        // TODO: Invalidate TLB entry
+        auto paddr = table[table_index].get_paddr();
+        table[table_index] = Page_entry(0);
+        return paddr;
     }
 
     Paddr to_paddr(Vaddr vaddr) {

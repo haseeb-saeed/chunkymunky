@@ -30,12 +30,10 @@ namespace Memory {
 
     namespace Vm_manager {
         void init(Kernel::Kernel_addr* kaddr);
-        Vaddr alloc_page();
-        void free_page(Vaddr vaddr);
+        Vaddr map_page(Vaddr vaddr, Paddr paddr);
+        Paddr umap_page(Vaddr vaddr);
         Paddr to_paddr(Vaddr vaddr);
     }
-
-    // TODO: We'll need a heap manager
 }
 }
 
